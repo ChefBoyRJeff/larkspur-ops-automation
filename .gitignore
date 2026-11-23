@@ -1,0 +1,22 @@
+# Local parameter files hold personal values (alert email, object IDs). Never commit them.
+*.local.bicepparam
+*.local.json
+.env
+.env.*
+
+# Keys and certificates
+*.pfx
+*.pem
+*.key
+*.cer
+
+# Bicep build output, test results and scratch
+/out/
+*.build.json
+testResults.xml
+scratch/
+
+# Editor / OS
+.vscode/
+Thumbs.db
+.DS_Store
