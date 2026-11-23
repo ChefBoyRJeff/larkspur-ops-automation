@@ -1,0 +1,7 @@
+=== M1-01 aa-lark-ops built in the portal, verified 11-22-2026 10:18:14 PM EST ===
+resource group: rg-lark-ops (eastus)
+name: aa-lark-ops  location: eastus  sku: Basic  state: Ok
+public network access: True
+identity type: SystemAssigned  principalId present: True
+local auth disabled: False
+tags: company=Larkspur Logistics (fictional); costCenter=CC-LARK-01; environment=lab; owner=platform; project=larkspur-ops-automation

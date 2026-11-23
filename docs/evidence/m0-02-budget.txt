@@ -4,3 +4,6 @@ amount: 5.0 USD, timeGrain: Monthly
 filter:   
 notifications: actual_100=100.0%, actual_50=50.0%, forecasted_100=100.0%
 email recipients: set from the gitignored local parameter file (not shown)
+
+--- correction, 11-22-2026 10:18:06 PM EST: the 'filter:' line above is blank because the preview 'az consumption budget show' returns the filter in another shape. Read through the REST API (2023-11-01): ---
+filter: ResourceGroupName In rg-lark-ops

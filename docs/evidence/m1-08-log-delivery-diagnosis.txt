@@ -1,0 +1,47 @@
+=== M1-08 diagnosis: Test-LarkIdentity job rows missing from log-lark, 11-22-2026 11:11:02 PM EST ===
+Symptom: job completed 10:37 PM EST; no AzureDiagnostics rows after 30+ minutes of polling (m1-07).
+--- H2: diagnostic setting ---
+workspaceId: /subscriptions/<subscription>/resourceGroups/rg-lark-data/providers/Microsoft.OperationalInsights/workspaces/log-lark
+enabled log categories: JobLogs, JobStreams
+logAnalyticsDestinationType: ''
+--- H1: log-lark capping and state ---
+workspace resource id matches setting: True
+dailyQuotaGb: 0.1   dataIngestionStatus: RespectQuota   quotaNextResetTime: 11/22/2026 23:00:00
+sku: PerGB2018   provisioningState: Succeeded   publicNetworkAccessForIngestion: Enabled
+--- H1: _LogOperation last 24h ---
+  (no rows)
+--- H3: AzureDiagnostics by provider/category last 24h ---
+  query failed
+--- H3: any ingestion into log-lark last 24h (Usage) ---
+  query failed
+--- CORRECTION, 11-22-2026 11:11:56 PM EST: the two H3 queries above failed to parse ('last' is a reserved KQL word). Re-run with column 'lastSeen': ---
+--- H3a: AzureDiagnostics by provider/category, last 24h ---
+  (no rows)
+--- H3b: anything mentioning LARK-HELLO, last 24h ---
+  (no rows)
+--- H1b: ingestion into log-lark by table, last 24h (Usage, MB) ---
+
+--- 11-22-2026 11:12:54 PM EST: H1b/H1c re-run (previous attempt crashed in the evidence helper, not in Azure) ---
+
+--- H1b: ingestion into log-lark by table, last 24h (Usage Quantity is MB) ---
+
+
+DataType                MB    TableName     lastSeen
+--------                --    ---------     --------
+ContainerAppConsoleLogs 1.598 PrimaryResult 11/23/2026 3:00:00 AM
+ContainerAppSystemLogs  0.096 PrimaryResult 11/23/2026 3:00:00 AM
+ContainerAppHTTPLogs    0.036 PrimaryResult 11/23/2026 3:00:00 AM
+
+
+--- H1c: billable GB today (UTC) vs the 0.1 GB cap ---
+
+
+GB     TableName
+--     ---------
+0.0001 PrimaryResult
+
+
+11-22-2026 11:14:17 PM  second Test-LarkIdentity job: Completed (job id ends ...4c9b)
+
+STATUS: OPEN. Diagnostic setting verified correct (H2 ruled out); no AzureDiagnostics rows yet. Re-check at the start of M2.
+
