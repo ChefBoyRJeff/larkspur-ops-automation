@@ -1,0 +1,6 @@
+=== M1-02 aa-lark-ops managed identity: least-privilege roles at subscription scope, 11-22-2026 10:19:03 PM EST ===
+11-22-2026 10:19:07 PM  assigned: Reader at /subscriptions/<subscription>
+11-22-2026 10:19:11 PM  assigned: Cost Management Reader at /subscriptions/<subscription>
+--- role assignments for the identity (read back) ---
+Reader                    ServicePrincipal   /subscriptions/<subscription>
+Cost Management Reader    ServicePrincipal   /subscriptions/<subscription>

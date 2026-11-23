@@ -1,0 +1,60 @@
+=== M1-07 Test-LarkIdentity as a real job + JobStreams in log-lark, 11-22-2026 10:36:16 PM EST ===
+11-22-2026 10:36:18 PM  job started
+11-22-2026 10:37:07 PM  final status: Completed  runOn: ''
+--- job output ---
+WARNING: Not a json response, outputting to stdout. For binary data suggest use "--output-file" to write to a file
+LARK-HELLO signed in; account type: ManagedService
+
+
+
+LARK-HELLO resource groups visible: 9
+
+
+
+LARK-HELLO rg: DefaultResourceGroup-EUS
+
+
+
+LARK-HELLO rg: NetworkWatcherRG
+
+
+
+LARK-HELLO rg: rg-cicd-dev
+
+
+
+LARK-HELLO rg: rg-cicd-prod
+
+
+
+LARK-HELLO rg: rg-hubspoke-lab
+
+
+
+LARK-HELLO rg: rg-lark-app
+
+
+
+LARK-HELLO rg: rg-lark-data
+
+
+
+LARK-HELLO rg: rg-lark-ops
+
+
+
+LARK-HELLO rg: rg-monitoring-lab
+
+
+
+LARK-HELLO write refused as expected (AuthorizationFailed): least privilege holds
+
+
+
+
+--- log-lark: AzureDiagnostics rows for Test-LarkIdentity (last 2h) ---
+11-22-2026 10:37:14 PM  no rows yet (ingestion delay); re-run only the query section in ~10 minutes
+--- log-lark re-check, 11-22-2026 10:37:57 PM EST ---
+11-22-2026 10:38:05 PM  still no rows
+--- log-lark polling re-check, started 11-22-2026 11:10:39 PM EST ---
+11-22-2026 11:10:39 PM  NO ROWS after 15 checks over 30 minutes: investigate the diagnostic setting

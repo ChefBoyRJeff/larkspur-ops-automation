@@ -1,0 +1,90 @@
+Note: The result may contain false positive predictions (noise).
+You can help us improve the accuracy of the result by opening an issue here: https://aka.ms/WhatIfIssues
+NOTICE! - Want to get What-if without noise? Move to Deployment Stacks What-If https://aka.ms/stackswhatifGA
+
+Resource and property changes are indicated with these symbols:
+  - Delete
+  + Create
+  ~ Modify
+  * Ignore
+  x Noeffect
+
+The deployment will update the following scopes:
+
+Scope: /subscriptions/<subscription>
+
+  + Microsoft.Authorization/roleAssignments/<guid> [2022-04-01]
+
+      apiVersion:                  "2022-04-01"
+      id:                          "/subscriptions/<subscription>/providers/Microsoft.Authorization/roleAssignments/<guid>"
+      name:                        "<guid>"
+      properties.principalId:      "[reference('/subscriptions/<subscription>/resourceGroups/rg-lark-ops/providers/Microsoft.Automation/automationAccounts/aa-lark-ops', '2024-10-23', 'full').identity.principalId]"
+      properties.roleDefinitionId: "/subscriptions/<subscription>/providers/Microsoft.Authorization/roleDefinitions/<guid>"
+      type:                        "Microsoft.Authorization/roleAssignments"
+
+  + Microsoft.Authorization/roleAssignments/<guid> [2022-04-01]
+
+      apiVersion:                  "2022-04-01"
+      id:                          "/subscriptions/<subscription>/providers/Microsoft.Authorization/roleAssignments/<guid>"
+      name:                        "<guid>"
+      properties.principalId:      "[reference('/subscriptions/<subscription>/resourceGroups/rg-lark-ops/providers/Microsoft.Automation/automationAccounts/aa-lark-ops', '2024-10-23', 'full').identity.principalId]"
+      properties.roleDefinitionId: "/subscriptions/<subscription>/providers/Microsoft.Authorization/roleDefinitions/<guid>"
+      type:                        "Microsoft.Authorization/roleAssignments"
+
+  ~ resourceGroups/rg-lark-ops [2024-03-01]
+    + tags:
+
+        company:     "Larkspur Logistics (fictional)"
+        costCenter:  "CC-LARK-01"
+        environment: "lab"
+        owner:       "platform"
+        project:     "larkspur-ops-automation"
+
+
+Scope: /subscriptions/<subscription>/resourceGroups/rg-lark-ops
+
+  + Microsoft.Automation/automationAccounts/aa-lark-ops/providers/Microsoft.Insights/diagnosticSettings/diag-to-log-lark [2021-05-01-preview]
+
+      apiVersion:             "2021-05-01-preview"
+      id:                     "/subscriptions/<subscription>/resourceGroups/rg-lark-ops/providers/Microsoft.Automation/automationAccounts/aa-lark-ops/providers/Microsoft.Insights/diagnosticSettings/diag-to-log-lark"
+      name:                   "diag-to-log-lark"
+      properties.logs: [
+        0:
+
+          category: "JobLogs"
+          enabled:  true
+
+        1:
+
+          category: "JobStreams"
+          enabled:  true
+
+      ]
+      properties.workspaceId: "/subscriptions/<subscription>/resourceGroups/rg-lark-data/providers/Microsoft.OperationalInsights/workspaces/log-lark"
+      type:                   "Microsoft.Insights/diagnosticSettings"
+
+  ~ Microsoft.Automation/automationAccounts/aa-lark-ops [2024-10-23]
+    - properties.RuntimeConfiguration:
+
+        powershell.builtinModules.Az:   "11.2.0"
+        powershell7.builtinModules.Az:  "8.0.0"
+        powershell72.builtinModules.Az: "11.2.0"
+
+    ~ properties.disableLocalAuth: false => true
+    x properties.sku.name:         "Basic"
+
+  ~ Microsoft.Automation/automationAccounts/aa-lark-ops/runtimeEnvironments/rt-lark-ps76 [2024-10-23]
+    + tags:
+
+        company:     "Larkspur Logistics (fictional)"
+        costCenter:  "CC-LARK-01"
+        environment: "lab"
+        owner:       "platform"
+        project:     "larkspur-ops-automation"
+
+
+  * Microsoft.Automation/automationAccounts/aa-lark-ops/runbooks/AzureAutomationTutorialWithIdentity
+  * Microsoft.Automation/automationAccounts/aa-lark-ops/runbooks/AzureAutomationTutorialWithIdentityGraphical
+  * Microsoft.Automation/automationAccounts/aa-lark-ops/runbooks/Test-LarkIdentity
+
+Resource changes: 3 to create, 3 to modify, 3 to ignore.

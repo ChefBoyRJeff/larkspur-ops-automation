@@ -1,0 +1,53 @@
+=== M1-06 redeploy: runtime environment with 3 tags, diagnostic setting declared as stored, 11-22-2026 10:32:25 PM EST ===
+11-22-2026 10:33:09 PM  deployed lark-ops-main in 41 s (exit code 0)
+--- verification ---
+rt-lark-ps76 tags: costCenter=CC-LARK-01; owner=platform; project=larkspur-ops-automation
+--- identity role assignments ---
+  Cost Management Reader
+  Reader
+--- what-if after redeploy (idempotency) ---
+Note: The result may contain false positive predictions (noise).
+You can help us improve the accuracy of the result by opening an issue here: https://aka.ms/WhatIfIssues
+NOTICE! - Want to get What-if without noise? Move to Deployment Stacks What-If https://aka.ms/stackswhatifGA
+
+Resource and property changes are indicated with these symbols:
+  - Delete
+  ~ Modify
+  = Nochange
+  * Ignore
+  x Noeffect
+
+The deployment will update the following scopes:
+
+Scope: /subscriptions/<subscription>
+
+  ~ Microsoft.Authorization/roleAssignments/<guid> [2022-04-01]
+    ~ properties.principalId:   "<guid>" => "[reference('/subscriptions/<subscription>/resourceGroups/rg-lark-ops/providers/Microsoft.Automation/automationAccounts/aa-lark-ops', '2024-10-23', 'full').identity.principalId]"
+    x properties.principalType: "ServicePrincipal"
+
+  ~ Microsoft.Authorization/roleAssignments/<guid> [2022-04-01]
+    ~ properties.principalId:   "<guid>" => "[reference('/subscriptions/<subscription>/resourceGroups/rg-lark-ops/providers/Microsoft.Automation/automationAccounts/aa-lark-ops', '2024-10-23', 'full').identity.principalId]"
+    x properties.principalType: "ServicePrincipal"
+
+  = resourceGroups/rg-lark-ops [2024-03-01]
+
+Scope: /subscriptions/<subscription>/resourceGroups/rg-lark-ops
+
+  ~ Microsoft.Automation/automationAccounts/aa-lark-ops [2024-10-23]
+    - properties.RuntimeConfiguration:
+
+        powershell.builtinModules.Az:   "11.2.0"
+        powershell7.builtinModules.Az:  "8.0.0"
+        powershell72.builtinModules.Az: "11.2.0"
+
+    x properties.sku.name: "Basic"
+
+  = Microsoft.Automation/automationAccounts/aa-lark-ops/providers/Microsoft.Insights/diagnosticSettings/diag-to-log-lark [2021-05-01-preview]
+  = Microsoft.Automation/automationAccounts/aa-lark-ops/runtimeEnvironments/rt-lark-ps76 [2024-10-23]
+  * Microsoft.Automation/automationAccounts/aa-lark-ops/runbooks/Test-LarkIdentity
+
+Resource changes: 3 to modify, 3 no change, 1 to ignore.
+
+--- NOTE, 11-22-2026 10:36:16 PM EST: what-if noise classification ---
+roleAssignments ~ principalId => [reference(...)]: what-if cannot evaluate the module output before deploy; the deploy above compared real values and the role list is unchanged. NOISE.
+roleAssignments x principalType, aa-lark-ops - RuntimeConfiguration, x sku.name: NOISE (documented).

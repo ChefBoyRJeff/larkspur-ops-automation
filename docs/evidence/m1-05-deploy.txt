@@ -1,0 +1,115 @@
+=== M1-05 deploy infra/main.bicep over the portal build, 11-22-2026 10:29:40 PM EST ===
+11-22-2026 10:29:44 PM  deleted tutorial runbook AzureAutomationTutorialWithIdentity
+11-22-2026 10:29:45 PM  deleted tutorial runbook AzureAutomationTutorialWithIdentityGraphical
+11-22-2026 10:29:57 PM  removed CLI-made assignment: Reader
+11-22-2026 10:30:00 PM  removed CLI-made assignment: Cost Management Reader
+11-22-2026 10:30:38 PM  deployed lark-ops-main in 38 s
+--- verification ---
+rg-lark-ops tags: company=Larkspur Logistics (fictional); costCenter=CC-LARK-01; environment=lab; owner=platform; project=larkspur-ops-automation
+disableLocalAuth: True  (expect True)
+RuntimeConfiguration still present after deploy: True  (True = what-if's removal was noise)
+rt-lark-ps76: PowerShell 7.6, az 15.1.0, tags 0
+diag-to-log-lark: workspace log-lark; logs JobLogs=True, JobStreams=True, DscNodeStatus=False, AuditEvent=False
+runbooks: Test-LarkIdentity
+--- identity role assignments (deterministic names now) ---
+--- what-if after deploy (idempotency) ---
+Note: The result may contain false positive predictions (noise).
+You can help us improve the accuracy of the result by opening an issue here: https://aka.ms/WhatIfIssues
+NOTICE! - Want to get What-if without noise? Move to Deployment Stacks What-If https://aka.ms/stackswhatifGA
+
+Resource and property changes are indicated with these symbols:
+  - Delete
+  + Create
+  ~ Modify
+  = Nochange
+  * Ignore
+  x Noeffect
+
+The deployment will update the following scopes:
+
+Scope: /subscriptions/<subscription>
+
+  + Microsoft.Authorization/roleAssignments/<guid> [2022-04-01]
+
+      apiVersion:                  "2022-04-01"
+      id:                          "/subscriptions/<subscription>/providers/Microsoft.Authorization/roleAssignments/<guid>"
+      name:                        "<guid>"
+      properties.principalId:      "[reference('/subscriptions/<subscription>/resourceGroups/rg-lark-ops/providers/Microsoft.Automation/automationAccounts/aa-lark-ops', '2024-10-23', 'full').identity.principalId]"
+      properties.roleDefinitionId: "/subscriptions/<subscription>/providers/Microsoft.Authorization/roleDefinitions/<guid>"
+      type:                        "Microsoft.Authorization/roleAssignments"
+
+  + Microsoft.Authorization/roleAssignments/<guid> [2022-04-01]
+
+      apiVersion:                  "2022-04-01"
+      id:                          "/subscriptions/<subscription>/providers/Microsoft.Authorization/roleAssignments/<guid>"
+      name:                        "<guid>"
+      properties.principalId:      "[reference('/subscriptions/<subscription>/resourceGroups/rg-lark-ops/providers/Microsoft.Automation/automationAccounts/aa-lark-ops', '2024-10-23', 'full').identity.principalId]"
+      properties.roleDefinitionId: "/subscriptions/<subscription>/providers/Microsoft.Authorization/roleDefinitions/<guid>"
+      type:                        "Microsoft.Authorization/roleAssignments"
+
+  = resourceGroups/rg-lark-ops [2024-03-01]
+
+Scope: /subscriptions/<subscription>/resourceGroups/rg-lark-ops
+
+  ~ Microsoft.Automation/automationAccounts/aa-lark-ops [2024-10-23]
+    - properties.RuntimeConfiguration:
+
+        powershell.builtinModules.Az:   "11.2.0"
+        powershell7.builtinModules.Az:  "8.0.0"
+        powershell72.builtinModules.Az: "11.2.0"
+
+    x properties.sku.name: "Basic"
+
+  ~ Microsoft.Automation/automationAccounts/aa-lark-ops/providers/Microsoft.Insights/diagnosticSettings/diag-to-log-lark [2021-05-01-preview]
+    - properties.metrics: [
+        0:
+
+          category:                "AllMetrics"
+          enabled:                 false
+          retentionPolicy.days:    0
+          retentionPolicy.enabled: false
+
+      ]
+    ~ properties.logs: [
+      ~ 0:
+
+        - retentionPolicy.days: 0
+
+      ~ 1:
+
+        - retentionPolicy.days: 0
+
+      - 2:
+
+          category:                "DscNodeStatus"
+          enabled:                 false
+          retentionPolicy.days:    0
+          retentionPolicy.enabled: false
+
+      - 3:
+
+          category:                "AuditEvent"
+          enabled:                 false
+          retentionPolicy.days:    0
+          retentionPolicy.enabled: false
+
+      ]
+
+  ~ Microsoft.Automation/automationAccounts/aa-lark-ops/runtimeEnvironments/rt-lark-ps76 [2024-10-23]
+    + tags:
+
+        company:     "Larkspur Logistics (fictional)"
+        costCenter:  "CC-LARK-01"
+        environment: "lab"
+        owner:       "platform"
+        project:     "larkspur-ops-automation"
+
+
+  * Microsoft.Automation/automationAccounts/aa-lark-ops/runbooks/Test-LarkIdentity
+
+Resource changes: 2 to create, 3 to modify, 1 no change, 1 to ignore.
+
+--- CORRECTION, 11-22-2026 10:32:25 PM EST: the 'deployed lark-ops-main in 38 s' line above is WRONG. The deployment FAILED: ---
+BadRequest on rt-lark-ps76: "Argument RuntimeEnvironmentTags with value 5 cannot be greater than 3."
+Applied before the failure: rg-lark-ops tags, disableLocalAuth=true, diag-to-log-lark. NOT applied: the 2 role assignments (they depend on the module output).
+Cause of the false line: az returned a non-zero exit code, which $ErrorActionPreference=Stop does not catch for native commands. Deploys now check $LASTEXITCODE.

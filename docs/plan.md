@@ -21,7 +21,7 @@ finds something or fails to run.
 
 ## Scope
 
-- **Deployed:** an Azure Automation account (`aa-lark-ops`) in a new resource group `rg-lark-ops`, PowerShell 7.4
+- **Deployed:** an Azure Automation account (`aa-lark-ops`) in a new resource group `rg-lark-ops`, PowerShell 7.6
   runbooks, schedules, a diagnostic setting sending job logs to the existing `log-lark` workspace, two alerts using
   the existing `ag-lark-ops` action group, a $5 budget.
 - **Read-only by design:** every runbook reports; none changes or deletes anything. Remediation stays a human
@@ -34,7 +34,7 @@ finds something or fails to run.
 | Component | Where | Notes |
 |---|---|---|
 | `aa-lark-ops` Automation account, Basic SKU | `rg-lark-ops`, East US | System-assigned managed identity; no Run As accounts, no stored credentials |
-| Runtime environment | `aa-lark-ops` | PowerShell 7.4 (Az modules included by default) |
+| Runtime environment | `rt-lark-ps76` (in `aa-lark-ops`) | PowerShell 7.6, default packages `az` 15.1.0 + `azure cli` 2.77.0 |
 | Runbooks + schedules | `aa-lark-ops` | One runbook per check (below) |
 | Diagnostic setting | on `aa-lark-ops` | Job logs and job streams to `log-lark` (`rg-lark-data`, 0.1 GB/day cap) |
 | Alert: runbook failed | `rg-lark-ops` | Metric alert on Total Jobs, Status = Failed, filtered to my runbook names (an unfiltered rule also counts hidden system runbooks) |
@@ -98,3 +98,14 @@ assignments; `log-lark` keeps the history for its 30-day retention.
 
 Dates MM-DD-YYYY; times `hh:mm AM/PM EST`; evidence in `docs/evidence/`, sanitized; branch, PR and merge in the
 browser; leak check before every commit; portal first for a new resource type, then Bicep with what-if.
+
+## Design notes from M1 (verified 11-22-2026)
+
+- **Runtime:** PowerShell **7.6** LTS (supported to 11-14-2028) in runtime environment `rt-lark-ps76`, with `az` 15.1.0 and `azure cli` 2.77.0. 7.4 reached end of support on 11-10-2026, so it was rejected.
+- **Runtime environment tag limit:** at most **3 tags** (`RuntimeEnvironmentTags ... cannot be greater than 3`). It carries `costCenter`, `project` and `owner`; every other resource carries all 5 tags.
+- **Local auth disabled:** `disableLocalAuth: true`. Runbooks authenticate only with the system-assigned managed identity.
+- **Identity scope:** Reader and Cost Management Reader at subscription scope, deployed by Bicep with deterministic `guid()` names. Write attempts are refused (`AuthorizationFailed`, see m1-03 and m1-07).
+- **Diagnostic setting** `diag-to-log-lark`: JobLogs and JobStreams go to `log-lark`. Every category and metric is declared exactly as Azure stores it, so what-if shows no drift.
+- **Known what-if noise (not real changes):** `aa-lark-ops - properties.RuntimeConfiguration`, `x sku.name`, role assignments `~ principalId => [reference(...)]` and `x principalType`.
+- **Deploy scripts check `$LASTEXITCODE`:** `$ErrorActionPreference = 'Stop'` does not catch a native command's non-zero exit (see the correction in m1-05).
+- **Runbook publishing:** source control integration does not support PowerShell 7.4/7.6 runtimes, so runbooks are published by the repo's own script (M2).
